@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 # Custom files ignore
-.bot_info/
+bot_info/userlist_notice.txt
+bot_info/token.txt
