@@ -13,20 +13,28 @@ def start_function(message):
 
 @bot.message_handler(commands=['notice'], chat_types=['private'])
 def notice_function(message):
-    keys = tg.types.InlineKeyboardMarkup(row_width=2)
-    button1 = tg.types.InlineKeyboardButton(text='Follow', callback_data='notice_allow')
-    button2 = tg.types.InlineKeyboardButton(text='Unfollow', callback_data='notice_reject')
-    keys.add(button1, button2)
+    # keys = tg.types.InlineKeyboardMarkup(row_width=2)
+    # button1 = tg.types.InlineKeyboardButton(text='Follow', callback_data='notice_allow')
+    # button2 = tg.types.InlineKeyboardButton(text='Unfollow', callback_data='notice_reject')
+    # keys.add(button1, button2)
+
+    key = tg.types.InlineKeyboardMarkup(row_width=1)
+    button1 = tg.types.InlineKeyboardButton(text='Unfollow', callback_data='notice_reject')
+    button2 = tg.types.InlineKeyboardButton(text='Follow', callback_data='notice_allow')
 
     user_id = message.from_user.id
     notice_status = notice_check_status(user_id)
     
     if notice_status == True:
         notice_status_result = "Active"
+        key.add(button1)
+        bot.send_message(message.chat.id, f'Notice follow status: {notice_status_result}\n', reply_markup=key)
     else:
         notice_status_result = "Inactive"
+        key.add(button2)
+        bot.send_message(message.chat.id, f'Notice follow status: {notice_status_result}\n', reply_markup=key)
 
-    bot.send_message(message.chat.id, f'Notice follow status: {notice_status_result}\nChoose action', reply_markup=keys)
+    # bot.send_message(message.chat.id, f'Notice follow status: {notice_status_result}\nChoose action', reply_markup=keys)
 
 @bot.callback_query_handler(func=lambda callback: callback.data)
 def notice_manage_function(callback):
